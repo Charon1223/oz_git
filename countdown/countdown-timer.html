@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./images/oz_icon.png" />
+    <title>오즈코딩스쿨 | 카운트다운 타이머</title>
+    <style>
+      *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body{
+        color: #fff;
+        background-image: url('https://e1.pxfuel.com/desktop-wallpaper/629/404/desktop-wallpaper-classy-backgrounds-background-classy.jpg');
+        background-position: center;
+      }
+      .container{
+        width: 100%;
+        max-width: 1200px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        box-shadow: 14px 12px 20px #090909;
+        background-color: #1e1e1e;
+        opacity: 0.9;
+        border-radius: 10px;
+      }
+      main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 800px;
+      }
+      header{
+        background-color: #3f3c37;
+        height: 50px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+        border-radius: 10px 10px 0 0;
+      }
+      header > span{
+        font-size: 22px;
+        color: #e7bdb4;
+      }
+      .dots{
+        display: flex;
+        justify-content: space-between;
+        width: 45px;
+      }
+      .dot-1{
+        width: 10px;
+        height: 10px;
+        background-color: #ff5f57;
+        border-radius: 50%;
+      }
+      .dot-2{
+        width: 10px;
+        height: 10px;
+        background-color: #febc2e;
+        border-radius: 50%;
+      }
+      .dot-3{
+        width: 10px;
+        height: 10px;
+        background-color: #29c840;
+        border-radius: 50%;
+      }
+      .times{
+        display: flex;
+        justify-content: center;
+        font-size: 90px;
+        font-weight: bold;
+        width: 100%;
+      }
+      #days::after{
+        content: " : ";
+      }
+      #hours::after{
+        content: " : ";
+      }
+      #mins::after{
+        content: " : ";
+      }
+      .times-text{
+        display: flex;
+        justify-content: space-around;
+        font-size: 18px;
+        width: 70%;
+      }
+      .days-text{
+        flex: 1;
+        text-align: center;
+      }
+      .hours-text{
+        flex: 1;
+        text-align: center;
+      }
+      .mins-text{
+        flex: 1;
+        text-align: center;
+      }
+      .sec-text{
+        flex: 1;
+        text-align: center;
+      }
+      .input-date{
+        display: flex;
+        text-align: center;
+        align-items: center;
+        margin: 30px 0 5px;
+        gap: 10px;
+      }
+      .input-date label{
+        font-size: 33px;
+      }
+      .input-date__time{
+        font-size: 16px;
+        padding: 5px;
+        width: 80px;
+        text-align: right;
+      }
+      .input-date__time:hover{
+        cursor: pointer;
+      }
+      .buttons{
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      #start{
+        text-align: center;
+        background-color: #2c8242;
+        width: 100px;
+        border-radius: 3px;
+        border: 1px solid #1e824c;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out;
+      }
+      #start:hover {
+        transform: translateY(-1px);
+      }
+      #stop{
+        text-align: center;
+        background-color: #3b3b3b;
+        width: 100px;
+        border-radius: 3px;
+        border: 1px solid #282727;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color: #525252;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+      }
+      #stop:hover {
+        transform: translateY(-1px);
+        color: #fff;
+      }
+      #info-text{
+        color: #ff5f57;
+        font-size: 15px;
+        margin-bottom: 30px;
+      }
+      
+      @media screen and (max-width:640px){
+        .times{
+          font-size: 70px;
+        }
+        .times-text{
+          font-size: 14px;
+          width: 50%;
+        }
+        .input-date__time{
+          font-size: 14px;
+          width: 50px;
+        }
+        .input-date label{
+          font-size: 29px;
+        }
+        #start{
+          font-size: 14px;
+          width: 70px;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        #stop{
+          font-size: 14px;
+          width: 70px;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        #info-text{
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="container">
+
+      <header>
+        <div class="dots">
+          <div class="dot-1"></div>
+          <div class="dot-2"></div>
+          <div class="dot-3"></div>
+        </div>
+        <span>+</span>
+      </header>
+
+      <main>
+        <div class="times">
+          <span id="days">0</span>
+          <span id="hours">&nbsp;0</span>
+          <span id="mins">&nbsp;0</span>
+          <span id="sec">&nbsp;0</span>
+        </div>
+        <div class="times-text">
+          <span class="days-text">DAYS</span>
+          <span class="hours-text">HOURS</span>
+          <span class="mins-text">MINUTES</span>
+          <span class="sec-text">SECONDS</span>
+        </div>
+        <div class="input-date">
+          <label for="date">📅</label>
+          <select class="input-date__time" name="date-sel" id="input-years">
+            <option value="년" id="input-years-value">년</option>
+          </select>
+          <select class="input-date__time" name="date-sel2" id="input-months">
+            <option value="월">월</option>
+          </select>
+          <select class="input-date__time" name="date-sel3" id="input-days">
+            <option value="일">일</option>
+          </select>
+          <select class="input-date__time" name="date-sel4" id="input-hours">
+            <option value="시">시</option>
+          </select>
+        </div>
+        <p id="info-text">※ 년,월,일,시 모두 입력해주세요.</p>
+
+        <div class="buttons">
+          <div id="start">START</div>
+          <div id="stop">STOP</div>
+        </div>
+      </main>
+    </div>
+
+
+    
+    <script>
+
+      const startButton = document.getElementById("start");
+      const stopButton = document.getElementById("stop");
+
+      const printDays = document.getElementById("days")
+      const printHours = document.getElementById("hours")
+      const printMins = document.getElementById("mins")
+      const printSecs = document.getElementById("sec")
+
+      const getYear = document.getElementById("input-years")
+      const getMonth = document.getElementById("input-months")
+      const getDay = document.getElementById("input-days")
+      const getHour = document.getElementById("input-hours")
+
+      const getYearVal = document.getElementById("input-years-value")
+
+      let countdownInterval;
+      
+      const yearArr = [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031];
+      const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      const dayArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+      const hourArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+      
+      
+
+      yearArr.forEach((item) => {
+        const option = document.createElement("option");
+        option.innerHTML = item;
+        option.value = item;
+        getYear.appendChild(option);
+      })
+      
+
+      monthArr.forEach((item, index) => {
+        const option = document.createElement("option");
+        option.innerHTML = item;
+        option.value = item;
+        getMonth.appendChild(option);
+      })
+
+      getMonth.addEventListener("change", updateMonthOption);
+
+      function updateMonthOption(){
+
+        const selectedMonth = parseInt(getMonth.value);
+        
+        getDay.innerHTML = "";
+        
+        if (selectedMonth === 2) {
+            updateDayOption(dayArr.slice(0, 29));
+        } else if (selectedMonth === 4 || selectedMonth === 6 
+        || selectedMonth === 9 || selectedMonth === 11) {
+          updateDayOption(dayArr.slice(0, 30));
+        } else if (selectedMonth === 1 || selectedMonth === 3 || selectedMonth === 5 || selectedMonth === 7 || selectedMonth === 8 || selectedMonth === 10 
+        || selectedMonth === 12) {
+          updateDayOption(dayArr);
+        } 
+      }
+
+
+      function updateDayOption(days){
+
+        days.forEach((day) => {
+          const option = document.createElement("option");
+          option.innerHTML = day;
+          option.value = day;
+          getDay.appendChild(option);
+        })
+      }
+
+      hourArr.forEach((item, index) => {
+        const option = document.createElement("option");
+        option.innerHTML = item;
+        option.value = item;
+        getHour.appendChild(option)
+      })
+
+
+      startButton.addEventListener("click", (item) => {
+
+        clearInterval(countdownInterval);
+
+
+        countdownInterval = setInterval(() => {
+
+          const paddedYear = `${parseInt(getYear.value, 10)}`.padStart(2, '0');
+          const paddedMonth = `${parseInt(getMonth.value, 10)}`.padStart(2, '0');
+          const paddedDay = `${parseInt(getDay.value, 10)}`.padStart(2, '0');
+          const paddedHour = `${parseInt(getHour.value, 10)}`.padStart(2, '0');
+  
+          const future = Date.parse(`${paddedYear}-${paddedMonth}-${paddedDay}T${paddedHour}:00:00`);
+  
+          const now = new Date();
+          const diff = future - now;
+          
+          const transDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const transHours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const transMins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const transSec = Math.floor((diff % (1000 * 60)) / 1000);
+          
+          const d = transDays;
+          const h = transHours;
+          const m = transMins;
+          const s = transSec;
+  
+  
+          printDays.innerHTML = `&nbsp;${d}`;
+          printHours.innerHTML = `&nbsp;${h}`;
+          printMins.innerHTML = `&nbsp;${m}`;
+          printSecs.innerHTML = `&nbsp;${s}`;
+        }, 1000);
+      });
+
+
+      stopButton.addEventListener("click", () => {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+
+        printDays.innerHTML = `&nbsp;0`;
+        printHours.innerHTML = `&nbsp;0`;
+        printMins.innerHTML = `&nbsp;0`;
+        printSecs.innerHTML = `&nbsp;0`;
+      })
+    </script>
+  </body>
+</html>
